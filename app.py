@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import psycopg2
+import psycopg
 import stripe
 from dotenv import load_dotenv
 import secrets
@@ -17,7 +17,7 @@ stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 
 # Database connection
 def get_db():
-    return psycopg2.connect(os.getenv('DATABASE_URL'))
+    return psycopg.connect(os.getenv('DATABASE_URL'))
 
 # Simple session storage
 sessions = {}
@@ -39,7 +39,6 @@ def owner_signup():
         password = data.get('password')
         business_name = data.get('businessName')
         
-        # Hash password (simple base64 for now)
         hashed_pwd = base64.b64encode(password.encode()).decode()
         
         conn = get_db()
